@@ -278,12 +278,5 @@
 				]
 			}
 		}
-	],
-	"variable": [
-		{
-			"key": "tenantID",
-			"value": "52cfc886-89b5-499f-865f-f89d60e87490",
-			"type": "string"
-		}
 	]
 }
