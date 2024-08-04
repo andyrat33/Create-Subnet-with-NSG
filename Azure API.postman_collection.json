@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "70629d9d-ef4d-41ae-b3e5-efdc47aa886f",
+		"name": "Azure API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19909390"
+	},
+	"item": [
+		{
+			"name": "Create Subnets",
+			"item": [
+				{
+					"name": "Create Subnet with NSG Associated in existing VNET",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"properties\": {\n    \"addressPrefix\": \"10.0.{{test_number}}.0/24\",\n    \"networkSecurityGroup\": {\n     \"name\": \"nsg_inbound1\",\n      \"id\": \"/subscriptions/{{subscriptionID}}/resourceGroups/{{resourceGroupName}}/providers/Microsoft.Network/networkSecurityGroups/nsg_inbound1\",\n      \"location\": \"eastus\"\n      }\n    \n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{subscriptionID}}/resourceGroups/{{resourceGroupName}}/providers/Microsoft.Network/virtualNetworks/{{virtualNetworkName}}/subnets/{{subnetName}}{{test_number}}?api-version=2024-01-01",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{subscriptionID}}",
+								"resourceGroups",
+								"{{resourceGroupName}}",
+								"providers",
+								"Microsoft.Network",
+								"virtualNetworks",
+								"{{virtualNetworkName}}",
+								"subnets",
+								"{{subnetName}}{{test_number}}"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2024-01-01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Subnet without NSG",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"properties\": {\n    \"addressPrefix\": \"10.0.{{test_number}}.0/24\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://management.azure.com/subscriptions/{{subscriptionID}}/resourceGroups/{{resourceGroupName}}/providers/Microsoft.Network/virtualNetworks/{{virtualNetworkName}}/subnets/{{subnetName}}{{test_number}}?api-version=2024-01-01",
+							"protocol": "https",
+							"host": [
+								"management",
+								"azure",
+								"com"
+							],
+							"path": [
+								"subscriptions",
+								"{{subscriptionID}}",
+								"resourceGroups",
+								"{{resourceGroupName}}",
+								"providers",
+								"Microsoft.Network",
+								"virtualNetworks",
+								"{{virtualNetworkName}}",
+								"subnets",
+								"{{subnetName}}{{test_number}}"
+							],
+							"query": [
+								{
+									"key": "api-version",
+									"value": "2024-01-01"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Test the creation of a Subnet in an existing VNET with and without NSG associated. Testing the policy: Subnets should be associated with a Network Security Group Andy.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"let myVar = pm.environment.get(\"test_number\");",
+							"myVar++;",
+							"pm.environment.set(\"test_number\", myVar);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "get-token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"bearerToken\", jsonData.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{clientID}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{clientSecret}}",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "https://management.azure.com/",
+							"type": "text"
+						},
+						{
+							"key": "subscriptionID",
+							"value": "{{subscriptionID}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{tenantID}}/oauth2/token?",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{tenantID}}",
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "tenantID",
+			"value": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+			"type": "string"
+		}
+	]
+}
