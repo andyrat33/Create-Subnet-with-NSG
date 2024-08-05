@@ -5,7 +5,7 @@ To import the Postman file and set the environment variables, follow these steps
 1. Open Postman.
 2. Click on the "Import" button in the top left corner of the Postman interface.
 3. Select the option to import a file.
-4. Browse to the location of the Postman file, which in this case is `/Users/andy/Azure/Policy/Create Subnet with NSG/README.md`.
+4. Browse to the location of the Postman file.
 5. Select the file and click on the "Open" button.
 6. Postman will import the file and display the collections and requests contained within it.
 
