@@ -20,3 +20,5 @@ To set the environment variables:
 7. Click on the "Save" button to save the environment.
 
 You can now use the imported collections and requests in Postman, and the environment variables will be available for use in your requests.
+
+Full Blog post https://blog.infosecmatters.net/2024/08/azure-policy-subnets-should-have.html
