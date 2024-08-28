@@ -15,7 +15,7 @@ provider "azurerm" {
 }
 # Data source to fetch the policy definition
 data "azurerm_policy_definition" "subnet_nsg_policy" {
-  display_name = "Subnets should be associated with a Network Security Group"
+  display_name = "Subnets should be associated with a Network Security Group Andy"
 }
 
 resource "azurerm_resource_group" "rg" {
